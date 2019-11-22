@@ -73,7 +73,7 @@ class LogTailer():
         poller = self.make_poller(tailer)
 
         while self.should_tail:
-            if self.should_run_callback():
+            if self.should_run_callbacks():
                 print("Time to run or queue too big!")
                 self.run_callbacks()
                 self.clear_line_queue()
