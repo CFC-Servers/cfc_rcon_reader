@@ -89,7 +89,6 @@ class LogTailer():
         print("Starting callback runner thread...")
         while self.should_tail:
             if self.should_run_callbacks():
-                print("Running callbacks")
                 self.run_callbacks()
                 self.clear_line_queue()
 
@@ -122,7 +121,7 @@ class ActionCableInterface():
         self.subscription = Subscription(connection, identifier=identifier)
         self.subscription.create()
 
-        print("Created subscription")
+        print("Created actioncable subscription")
 
     def send_lines(self, lines):
         data = {
