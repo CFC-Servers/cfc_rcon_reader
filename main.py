@@ -74,7 +74,7 @@ class LogTailer():
             else:
                 time.sleep(0.05)
 
-            if (not self.queue_is_empty) and self.time_to_run() or self.queue_too_big():
+            if (not self.queue_is_empty()) and self.time_to_run() or self.queue_too_big():
                 print("Time to run or queue too big!")
                 self.run_callbacks()
                 self.clear_line_queue()
