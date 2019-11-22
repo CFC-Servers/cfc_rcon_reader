@@ -85,9 +85,9 @@ class LogTailer():
         poller = self.make_poller(tailer)
 
         while self.should_tail:
-            #if self.should_run_callbacks():
-            self.run_callbacks()
-            self.clear_line_queue()
+            if self.should_run_callbacks():
+                self.run_callbacks()
+                self.clear_line_queue()
 
             line = tailer.stdout.readline()
             line = self.clean_line(line)
