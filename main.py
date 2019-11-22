@@ -22,8 +22,8 @@ class LogTailer():
 
     def start(self):
         self.should_tail = True
-        self.tail()
         self.runner_thread.start()
+        self.tail()
 
     def stop(self):
         self.should_tail = False
@@ -86,12 +86,14 @@ class LogTailer():
         return (has_items and is_expired) or queue_too_big
 
     def runner(self):
+        print("Starting callback runner thread...")
         while self.should_tail:
             if self.should_run_callbacks():
                 print("Running callbacks")
                 self.run_callbacks()
                 self.clear_line_queue()
-            sleep(self.run_interval/2)
+
+            time.sleep(self.run_interval/2)
 
     def tail(self):
         tailer = self.make_tailer()
