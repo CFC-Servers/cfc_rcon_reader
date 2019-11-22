@@ -59,7 +59,16 @@ class LogTailer():
         self.line_queue = []
 
     def queue_is_empty(self):
-        return len(self.line_queue) > 0
+        return len(self.line_queue) == 0
+
+    def should_queue_line(self, line):
+        if line[0] == 'L':
+            return False
+
+        if line.startswith('ServerLog'):
+            return False
+
+        return True
 
     def should_run_callbacks(self):
         has_items = not self.queue_is_empty()
@@ -74,7 +83,6 @@ class LogTailer():
 
         while self.should_tail:
             if self.should_run_callbacks():
-                print("Time to run or queue too big!")
                 self.run_callbacks()
                 self.clear_line_queue()
 
@@ -82,7 +90,8 @@ class LogTailer():
                 line = tailer.stdout.readline()
                 line = self.clean_line(line)
 
-                self.queue_line(line)
+                if self.should_queue_line(line):
+                    self.queue_line(line)
             else:
                 time.sleep(0.05)
 
