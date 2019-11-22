@@ -58,6 +58,9 @@ class LogTailer():
     def clear_line_queue(self):
         self.line_queue = []
 
+    def queue_is_empty(self):
+        return len(self.line_queue) > 0
+
     def tail(self):
         tailer = self.make_tailer()
         poller = self.make_poller(tailer)
@@ -68,12 +71,13 @@ class LogTailer():
                 line = self.clean_line(line)
 
                 self.queue_line(line)
-
-                if self.time_to_run() or self.queue_too_big():
-                    self.run_callbacks()
-                    self.clear_line_queue()
             else:
                 time.sleep(0.05)
+
+            if (not queue_is_empty) and self.time_to_run() or self.queue_too_big():
+                print("Time to run or queue too big!")
+                self.run_callbacks()
+                self.clear_line_queue()
 
 class ActionCableInterface():
     def __init__(self, channel_name, action, websocket_api_key, websocket_uri, websocket_origin):
