@@ -3,10 +3,10 @@ import select
 import subprocess
 import time
 
-from actioncable.connection import Connection
-from actioncable.subscription import Subscription
-from actioncable.message import Message
 from dotenv import load_dotenv
+from lib.actioncable.connection import Connection
+from lib.actioncable.subscription import Subscription
+from lib.actioncable.message import Message
 
 class LogTailer():
     def __init__(self, path, interval=0.2):
