@@ -17,12 +17,16 @@ class LogTailer():
         self.run_interval = interval
         self.line_queue = []
 
+        self.runner_thread = threading.Thread(target=self.runner)
+
     def start(self):
         self.should_tail = True
         self.tail()
+        self.runner_thread.start()
 
     def stop(self):
         self.should_tail = False
+        self.runner_thread.stop()
 
     def add_callback(self, callback):
         self.callbacks.append(callback)
@@ -80,15 +84,19 @@ class LogTailer():
 
         return (has_items and is_expired) or queue_too_big
 
+    def runner(self):
+        while self.should_tail:
+            if self.should_run_callbacks():
+                print("Running callbacks")
+                self.run_callbacks()
+                self.clear_line_queue()
+            sleep(self.run_interval/2)
+
     def tail(self):
         tailer = self.make_tailer()
         poller = self.make_poller(tailer)
 
         while self.should_tail:
-            if self.should_run_callbacks():
-                self.run_callbacks()
-                self.clear_line_queue()
-
             line = tailer.stdout.readline()
             line = self.clean_line(line)
 
