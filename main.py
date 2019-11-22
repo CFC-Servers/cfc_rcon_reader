@@ -92,8 +92,6 @@ class LogTailer():
 
                 if self.should_queue_line(line):
                     self.queue_line(line)
-            else:
-                time.sleep(0.05)
 
 class ActionCableInterface():
     def __init__(self, channel_name, action, websocket_api_key, websocket_uri, websocket_origin):
