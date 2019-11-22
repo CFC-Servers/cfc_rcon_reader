@@ -82,16 +82,15 @@ class LogTailer():
         poller = self.make_poller(tailer)
 
         while self.should_tail:
-            if self.should_run_callbacks():
-                self.run_callbacks()
-                self.clear_line_queue()
+            #if self.should_run_callbacks():
+            self.run_callbacks()
+            self.clear_line_queue()
 
-            if poller.poll(1):
-                line = tailer.stdout.readline()
-                line = self.clean_line(line)
+            line = tailer.stdout.readline()
+            line = self.clean_line(line)
 
-                if self.should_queue_line(line):
-                    self.queue_line(line)
+            if self.should_queue_line(line):
+                self.queue_line(line)
 
 class ActionCableInterface():
     def __init__(self, channel_name, action, websocket_api_key, websocket_uri, websocket_origin):
