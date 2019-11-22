@@ -68,6 +68,9 @@ class LogTailer():
         if line.startswith('ServerLog'):
             return False
 
+        if len(line.strip()) == 0:
+            return False
+
         return True
 
     def should_run_callbacks(self):
