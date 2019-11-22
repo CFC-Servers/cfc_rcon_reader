@@ -96,7 +96,7 @@ class ActionCableInterface():
     def send_lines(self, lines):
         data = {
             "lines": lines,
-            "api_key": self.websocket_api_key
+            "token": self.websocket_api_key
         }
 
         message = Message(action=self.action, data=data)
