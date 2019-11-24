@@ -10,7 +10,7 @@ from lib.actioncable.subscription import Subscription
 from lib.actioncable.message import Message
 
 class LogTailer():
-    def __init__(self, path, interval=0.2):
+    def __init__(self, path, interval=0.35):
         self.path = path
         self.should_tail = False
         self.callbacks = []
@@ -43,7 +43,7 @@ class LogTailer():
         return len(self.line_queue) > 30
 
     def make_tailer(self):
-        return subprocess.Popen(['tail', '-F', self.path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return subprocess.Popen(['tail', '-F', '-n', '1', self.path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     def make_poller(self, tailer):
         poller = select.poll()
