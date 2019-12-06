@@ -67,12 +67,6 @@ class LogTailer():
         return len(self.line_queue) == 0
 
     def should_queue_line(self, line):
-        if line[0] == 'L':
-            return False
-
-        if line.startswith('ServerLog'):
-            return False
-
         if len(line.strip()) == 0:
             return False
 
@@ -101,6 +95,8 @@ class LogTailer():
         while self.should_tail:
             line = tailer.stdout.readline()
             line = self.clean_line(line)
+
+            print("Got new line: {}".format(line))
 
             if self.should_queue_line(line):
                 self.queue_line(line)
