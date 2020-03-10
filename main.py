@@ -67,6 +67,9 @@ class LogTailer():
         return len(self.line_queue) == 0
 
     def should_queue_line(self, line):
+        if len(line) == 0:
+            return False
+
         if line[0] == 'L':
             return False
 
