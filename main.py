@@ -1,5 +1,6 @@
 import os
 import select
+import sentry_sdk
 import subprocess
 import time
 import threading
@@ -114,7 +115,9 @@ class ActionCableInterface():
         connection.connect()
 
         identifier = {"channel": self.channel_name}
+
         self.subscription = Subscription(connection, identifier=identifier)
+        self.subscription.logger.setLevel("ERROR")
         self.subscription.create()
 
         print("Created actioncable subscription")
@@ -130,6 +133,12 @@ class ActionCableInterface():
 
 if __name__ == "__main__":
     load_dotenv()
+
+    sentry_sdk.init(
+        os.getenv("SENTRY_DSN"),
+        traces_sample_rate=1.0,
+        environment=os.getenv("SENTRY_ENVIRONMENT")
+    )
 
     channel_name = os.getenv("CHANNEL_NAME")
     action = os.getenv("WEBSOCKET_ACTION")
