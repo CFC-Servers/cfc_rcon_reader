@@ -121,7 +121,9 @@ class ActionCableInterface():
         connection.connect()
 
         identifier = {"channel": self.channel_name}
+
         self.subscription = Subscription(connection, identifier=identifier)
+        self.subscription.logger.setLevel("ERROR")
         self.subscription.create()
 
         print("Created actioncable subscription")
